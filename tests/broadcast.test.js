@@ -4,14 +4,18 @@
 import {
     assert,
     assertEquals,
-} from "https://deno.land/std@0.136.0/testing/asserts.ts";
+} from "https://deno.land/std@0.148.0/testing/asserts.ts";
 import {
-    describe, it, beforeEach, afterAll,
-} from "https://deno.land/std@0.136.0/testing/bdd.ts";
+    describe, it, beforeEach, afterAll, afterEach,
+} from "https://deno.land/std@0.148.0/testing/bdd.ts";
 
 import { PubSub } from '../mod.js'
+
 let pubsub1 = new PubSub({ broadcastChannelId: 'PUBSUB-CHANNEL' })
 let pubsub2 = new PubSub({ broadcastChannelId: 'PUBSUB-CHANNEL' })
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 describe('broadcast', async () => {
 
@@ -20,7 +24,7 @@ describe('broadcast', async () => {
         pubsub2.reset()
     })
 
-    it('can publish-subscribe', () => {
+    it('can publish-subscribe', async () => {
         pubsub1.subscribe('channel-1.sub-1', (a,b) => {
             assertEquals(a + b, 3)
         })
@@ -28,14 +32,14 @@ describe('broadcast', async () => {
             assertEquals(a + b, 3)
         })
 
-
         pubsub2.publish(
             'channel-1' + '!', // must be ended w '!'
             1, 2)
     })
 
-    afterAll(() => {
+    afterEach(async () => {
         pubsub1.broadcastChannel.close()
         pubsub2.broadcastChannel.close()
+        await sleep(1)
     })
 })

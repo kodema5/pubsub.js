@@ -3,10 +3,10 @@
 import {
     assert,
     assertEquals,
-} from "https://deno.land/std@0.136.0/testing/asserts.ts";
+} from "https://deno.land/std@0.148.0/testing/asserts.ts";
 import {
     describe, it, beforeEach
-} from "https://deno.land/std@0.136.0/testing/bdd.ts";
+} from "https://deno.land/std@0.148.0/testing/bdd.ts";
 
 import { pubsub } from '../mod.js'
 
